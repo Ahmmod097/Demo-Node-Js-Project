@@ -1,18 +1,46 @@
-const getGoals = (req, res) => {
-    res.status(200).json({ message: "Get Goals"});
-};
+const asyncHandler = require('express-async-handler');
 
-const setGoal = (req, res) => {
-    res.status(201).json({ message: "Set Goal"});
-};
+const { getGoalsResponse, setGoalResponse, updateGoalResponse, deleteGoalResponse } = require("../services/goalServices")
 
-const updateGoal = (req, res) => {
-    res.status(200).json({ message: `Update Goal ${req.params.id}`});
-};
+const getGoals = asyncHandler(async (req, res) => {
+    res.status(200).json(
+        { 
+            message: "OK",
+            "result": getGoalsResponse()
+        }
+    );
+});
 
-const deleteGoal = (req, res) => {
-    res.status(200).json({ message: `Delete Goal ${req.params.id}`});
-};
+const setGoal = asyncHandler(async (req, res) => {
+    if(!req.body.text){
+        res.status(400);
+        throw new Error("Please add a text field")
+    }
+    res.status(201).json(
+        { 
+            message: "OK",
+            "result": setGoalResponse(req.body.text)
+        }
+    );
+});
+
+const updateGoal = asyncHandler(async  (req, res) => {
+    res.status(200).json(
+        { 
+            message: `Update Goal ${req.params.id}`,
+            "result": updateGoalResponse()
+        }
+    );
+});
+
+const deleteGoal = asyncHandler(async  (req, res) => {
+    res.status(200).json(
+        { 
+            message: `Delete Goal ${req.params.id}`,
+            "result": deleteGoalResponse()
+        }
+    );
+});
 
 module.exports = {
     getGoals,
