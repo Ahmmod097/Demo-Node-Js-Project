@@ -1,14 +1,15 @@
 const Goal = require('../model/goalModel');
-
+const { goalValidator} = require('../validators/goalValidator');
 const getGoalsResponse = async() => {
     const goals = await Goal.find();
     return goals;
 };
 
 
-const setGoalResponse = async(req) => {
+const setGoalResponse = async(req, res) => {
+    await goalValidator(req, res);
     const goal = await Goal.create({
-        text: req.text
+        text: req.body.text
     })
     return goal;
 };
